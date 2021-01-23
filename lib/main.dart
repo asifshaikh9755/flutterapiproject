@@ -9,11 +9,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'ApiPractice',
+      title: 'Api Practice',
       theme: ThemeData(
-        primarySwatch: Colors.pink
+        primarySwatch: Colors.pink,
       ),
-      home: HomePage(title:'Api Practie'),
+      home: HomePage(),
     );
   }
 }
