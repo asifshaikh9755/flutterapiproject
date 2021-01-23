@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 import 'dart:convert';
+import 'dart:async';
 
 class HomePage extends StatefulWidget {
-  final String title;
-
-  HomePage({Key key, @required this.title}) : super(key: key);
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -20,8 +17,8 @@ class _HomePageState extends State<HomePage> {
   Future getData() async {
     var response = await http.get(Uri.encodeFull(url),headers: {"Accept":"application/json"});
 
-    List data = jsonDecode(response.body)['results'];
-    print(data);
+    List data = json.decode(response.body)['results'];
+    
     setState(() {
       userData = data;
       _loading = false;
@@ -37,15 +34,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Center(
+      child: Center(
       child: _loading
           ? CircularProgressIndicator()
           : ListView.builder(
               itemCount: userData == null ? 0 : userData.length,
               itemBuilder: (context, index) {
                 return Card(
-                    child: Row(
-                  children: <Widget>[
+                  child: Row(
+                    children: <Widget>[
                     Container(
                         margin: EdgeInsets.all(20),
                         child: Image(
@@ -53,23 +50,25 @@ class _HomePageState extends State<HomePage> {
                           height: 70,
                           fit: BoxFit.contain,
                           image: NetworkImage(
-                              userData[index]['picture']['thumbnail']),
-                        )),
+                              userData[index]['picture']['thumbnail']
+                          ),
+                        ),
+                    ),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            userData[index]['name']['title']+['first'] +
-                                userData[index]['name']['last'],
+                            userData[index]['name']['first'] + " " + userData[index]['name']['last'],
                             style: TextStyle(fontSize: 20, color: Colors.black),
-                          )
+                          ),
                         ],
                       ),
                     )
                   ],
-                ));
+                  ),
+                );
               }),
     )
     );
